@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script>
+        function httpGet() {
+            var http = new XMLHttpRequest();
+            http.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("json").innerHTML = this.responseText;
+                    var respObjects = JSON.parse(this.responseText);
+                    console.log(respObjects);
+                    var txt = "<table class=\"table table-bordered table-responsive\">";
+                    for(var x in respObjects) {
+                        txt += "<tr><th scope=\"row\">" + x + "</th>";
+                        txt += "<th>" + respObjects[x].filename + "</th>";
+                        txt += "<th>" + respObjects[x].name + "</th>";
+                        txt += "<th>" + respObjects[x].description + "</th>";
+                        txt += "<th>" + respObjects[x].title + "</th>";
+                        txt += "<th>" + respObjects[x].type + "</th>";
+                        txt += "</tr>";
+                    }
+                    txt += "</table>"
+                    document.getElementById("list").innerHTML = txt;
+                }
+            };
+            http.open("GET", "http://127.0.0.1:8000/list", true);
+            http.send();
+        }
+    </script>
+</head>
+<body>
+
+<h1>Materials Info</h1>
+<h3>Please choose:</h3>
+<button class="btn btn-secondary btn-lg" onclick="httpGet()" autofocus>Get Info</button>
+<br />
+<br />
+<div id="list"></div>
+<p id="json"></p>
+
+</body>
+</html>
